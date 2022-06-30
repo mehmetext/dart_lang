@@ -22,32 +22,6 @@ void main() {
     },
   };
 
-  map = {
-    "cevap": {
-      "CevapID": 0,
-      "UretimID": "5649813",
-      "FormID": "FORMID_123123",
-      "RevizeID": "REVIZEID_ASLKNDLKS",
-      "SaatPlanlanan": null,
-      "SaatGerceklesen": DateTime.now().toIso8601String(),
-      "PersonelID": "PERSONELID_1ASD84AS9",
-      "GenelAciklama": "Genel Açıklama falan filan",
-    },
-    "cevapKriters": {
-      "key": "KK_CevapKriter",
-      "items": List.generate(
-        3,
-        (i) => {
-          "KriterCevapID": 0,
-          "CevapID": 0,
-          "KriterID": i,
-          "Cevap": "U",
-          "Aciklama": "Kriter Açıklaması $i",
-        },
-      ),
-    },
-  };
-
   String xmlFromMap = mapToXml(map, spaceString: "  ");
 
   print(xmlFromMap);

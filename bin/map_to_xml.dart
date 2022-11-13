@@ -4,22 +4,20 @@ void main() {
     "int_deger": 1235,
     "double_deger": 126.84,
     "bool_deger": true,
+    "null_deger": null,
     "Map_Deger": {
       "Map_Deger_1": "Map Değer 1",
       "Map_Deger_2": {
         "Map_Deger_2_1": "Map Değer 2_1",
       },
     },
-    "List_deger": {
-      "key": "List_Item",
-      "items": List.generate(
-        5,
-        (index) => {
-          "List_Item_Id": index,
-          "List_Item_Str": "List Item String $index",
-        },
-      ),
-    },
+    "List_deger<List_Item>": List.generate(
+      5,
+      (index) => {
+        "List_Item_Id": index,
+        "List_Item_Str": "List Item String $index",
+      },
+    ),
   };
 
   String xmlFromMap = mapToXml(map, spaceString: "  ");
@@ -37,31 +35,35 @@ String mapToXml(
   map.forEach((key, value) {
     String addingXml = (spaceString * space);
 
-    if (map[key] is Map && map[key]["key"] != null) {
-      String addingListToXml = xmlTag(key, newLine: true);
+    if (map[key] is List) {
+      RegExp itemKeyRegExp = RegExp(r'<(\w+)>');
+      String itemKey = itemKeyRegExp.firstMatch(key).group(1);
+      String listKey = key.replaceAll(itemKeyRegExp, "");
 
-      for (Map<String, dynamic> mapItemInList in map[key]["items"]) {
+      String addingListToXml = xmlTag(listKey, newLine: true);
+
+      for (int i = 0; i < map[key].length; i++) {
         addingListToXml += xmlTag(
-          map[key]['key'],
+          itemKey,
           space: spaceString * (space + 1),
           newLine: true,
         );
 
         addingListToXml += mapToXml(
-          mapItemInList,
+          map[key][i],
           space: space + 2,
           spaceString: spaceString,
         );
 
         addingListToXml += xmlTag(
-          map[key]['key'],
+          itemKey,
           space: spaceString * (space + 1),
           isEnd: true,
         );
       }
 
       addingListToXml += xmlTag(
-        key,
+        listKey,
         space: (spaceString * space),
         isEnd: true,
       );
